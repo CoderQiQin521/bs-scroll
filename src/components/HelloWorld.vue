@@ -2,13 +2,14 @@
   <div class="hello">
     <div class="wrapper" ref="wrapper">
       <ul class="content">
-        <li class="item" v-for="item in 40" :key="item">{{ item }}</li>
+        <li class="item" v-for="item in list" :key="item">{{ item }}</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import BetterScroll from "better-scroll";
 
 export default {
@@ -16,16 +17,28 @@ export default {
   props: {
     msg: String
   },
-  mounted() {
-    // DOM渲染完成,正确计算高度,确保滚动正常
-    this.$nextTick(() => {
-      let bs = new BetterScroll(this.$refs.wrapper, {
-        movable: true,
-        zoom: true,
-        pullUpLoad: true
+  data() {
+    return {
+      list: []
+    };
+  },
+  created() {
+    axios.get("http://localhost:3001/book/list").then(res => {
+      let data = res.data;
+      this.list = data.data;
+      console.log("data: ", data);
+      // DOM渲染完成,正确计算高度,确保滚动正常
+      // !Vue 数据发生变化（this.data = res.data）到页面重新渲染是一个异步的过程，我们的初始化时机是要在 DOM 重新渲染后，所以这里用到了 this.$nextTick，当然替换成 setTimeout(fn, 20) 也是可以的。
+      this.$nextTick(() => {
+        let bs = new BetterScroll(this.$refs.wrapper, {
+          movable: true,
+          zoom: true,
+          pullUpLoad: true
+        });
       });
     });
-  }
+  },
+  mounted() {}
 };
 </script>
 
