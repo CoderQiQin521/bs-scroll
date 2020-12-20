@@ -4,7 +4,9 @@
     <button @click="loadData(2)">分类2</button>
     <div class="wrapper" ref="wrapper">
       <ul class="content">
-        <li class="item" v-for="item in list" :key="item">{{ item }}</li>
+        <li class="item" v-for="item in list" :key="item" @click="handle">
+          {{ item }}
+        </li>
       </ul>
     </div>
   </div>
@@ -38,12 +40,17 @@ export default {
         // !Vue 数据发生变化（this.data = res.data）到页面重新渲染是一个异步的过程，我们的初始化时机是要在 DOM 重新渲染后，所以这里用到了 this.$nextTick，当然替换成 setTimeout(fn, 20) 也是可以的。
         this.$nextTick(() => {
           if (!this.scroll) {
-            this.scroll = new BetterScroll(this.$refs.wrapper, {});
+            this.scroll = new BetterScroll(this.$refs.wrapper, {
+              click: true
+            });
           } else {
             this.scroll.refresh();
           }
         });
       });
+    },
+    handle() {
+      alert(1);
     }
   }
 };
