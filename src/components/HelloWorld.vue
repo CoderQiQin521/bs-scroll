@@ -2,8 +2,6 @@
   <div class="hello">
     <button @click="switchTab(1)">在职</button>
     <button @click="switchTab(2)">离职</button>
-    <!-- :pulldown="true"
-      @pulldown="loadData" -->
     <scroll
       class="wrapper"
       :data="list"
@@ -15,6 +13,7 @@
           {{ item.name }}
         </li>
       </ul>
+      <div class="loading-wrapper">{{ loadingText }}</div>
     </scroll>
   </div>
 </template>
@@ -33,7 +32,8 @@ export default {
       list: [],
       type: 1,
       page: 1,
-      pageInfo: {}
+      pageInfo: {},
+      loadingText: "玩命加载中"
     };
   },
   created() {
