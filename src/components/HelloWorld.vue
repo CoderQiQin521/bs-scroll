@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <div class="wrapper">
+    <div class="wrapper" ref="wrapper">
       <ul class="content">
         <li class="item" v-for="item in 40" :key="item">{{ item }}</li>
       </ul>
@@ -17,9 +17,13 @@ export default {
     msg: String
   },
   mounted() {
-    let bs = new BetterScroll(".wrapper", {
-      movable: true,
-      zoom: true
+    // DOM渲染完成,正确计算高度,确保滚动正常
+    this.$nextTick(() => {
+      let bs = new BetterScroll(this.$refs.wrapper, {
+        movable: true,
+        zoom: true,
+        pullUpLoad: true
+      });
     });
   }
 };
